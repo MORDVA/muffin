@@ -12,6 +12,8 @@ using namespace std;
 
 void flushRegisters();
 void engine(string input);
+void flushSwitches();
+void setSwitches(string input);
 
 /** GLOBAL VARIABLES and FAKE MEMORY!*/
 
@@ -32,6 +34,24 @@ vector <int> intRegister;
 vector <double> doubleRegister;
 vector <string> stringRegister;
 
+// Switches
+
+struct switches{
+
+    bool assignment;
+    bool initment;
+    bool computation;
+    bool withinParen;
+    bool withinWhile;
+    bool withinIf;
+
+};
+
+// Create instance of switchboard
+
+switches switchBoard;
+
+
 // Main function just for testing purposes
 
 int main()
@@ -40,7 +60,7 @@ int main()
 
     while(1 == 1){
 
-        cout << "$" << endl;
+        cout << endl << "$" << endl;
         getline(cin,input);
         engine(input);
     }
@@ -62,6 +82,16 @@ void flushRegisters(){
 
 }
 
+void flushSwitches(){
+
+    switchBoard.assignment = false;
+    switchBoard.initment = false;
+    switchBoard.withinIf = false;
+    switchBoard.withinParen = false;
+    switchBoard.withinWhile = false;
+
+}
+
 /** THE ENGINE!!!
 /
 /
@@ -70,9 +100,36 @@ void flushRegisters(){
 
 void engine(string input){
 
+    // Set switches
+
+    setSwitches(input);
 
 
 
+
+    // Clear switches
+
+    flushSwitches();
+
+}
+
+void setSwitches(string input){
+
+    int i;
+
+    // Loop through input and determine what switches need to be set
+
+    for(i = 0; i < input.size(); i++){
+
+        if(input[i] == '='){
+            switchBoard.assignment = true;
+        }
+
+        if(input[i] == '+' || input[i] == '-'||input[i] == '*'||input[i] == '%'){
+            switchBoard.computation = true;
+        }
+
+    }
 
 
 
