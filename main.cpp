@@ -15,6 +15,7 @@ void flushRegisters();
 void engine(string input);
 void flushSwitches();
 void setSwitches(string input);
+void courseOfAction(string input);
 
 /** GLOBAL VARIABLES and FAKE MEMORY!*/
 
@@ -39,12 +40,29 @@ vector <string> stringRegister;
 
 struct switches{
 
+    // Initment switches
+
+    bool initInt;
+    bool initString;
+    bool initDouble;
+
+    // Assinment switch
+
     bool assignment;
-    bool initment;
+
+    // Computation switch
+
     bool computation;
-    bool withinParen;
+
+    // Lexer switches
+
+    bool withinQoute;
     bool withinWhile;
     bool withinIf;
+
+    /* HIGH LEVEL SWITCHES */
+
+    bool rawComputation;
 
 };
 
@@ -52,6 +70,14 @@ struct switches{
 
 switches switchBoard;
 
+// Create an instance of the expression parser
+
+ExpressionParser<int> parser;
+
+
+// Create an instruction stack
+
+vector <string> instructionStack;
 
 // Main function just for testing purposes
 
@@ -85,11 +111,18 @@ void flushRegisters(){
 
 void flushSwitches(){
 
+    switchBoard.initInt = false;
+    switchBoard.initString = false;
+    switchBoard.initDouble = false;
+
     switchBoard.assignment = false;
-    switchBoard.initment = false;
-    switchBoard.withinIf = false;
-    switchBoard.withinParen = false;
+
+    switchBoard.computation = false;
+    switchBoard.withinQoute = false;
     switchBoard.withinWhile = false;
+    switchBoard.withinIf = false;
+
+    switchBoard.rawComputation = false;
 
 }
 
@@ -101,14 +134,15 @@ void flushSwitches(){
 
 void engine(string input){
 
+    // Push back the instruction
+
+    instructionStack.push_back(input);
+
     // Set switches
 
     setSwitches(input);
 
-    ExpressionParser<int> parser;
-
-
-    cout << "\n" << parser.eval(input) << "\n";
+    courseOfAction(input);
 
     // Clear switches
 
@@ -120,7 +154,30 @@ void setSwitches(string input){
 
     int i;
 
-    // Loop through input and determine what switches need to be set
+    // See what initment switches need to be set
+
+    if(input.find("int ")!= string::npos){
+
+        cout << "\nFOUND INTEGER INITIALIZATION\n";
+        switchBoard.initInt = true;
+
+    }
+
+    if(input.find("double ")!= string::npos){
+
+        cout << "\nFOUND DOUBLE INITIALIZATION\n";
+        switchBoard.initDouble = true;
+
+    }
+
+    if(input.find("string ")!= string::npos){
+
+        cout << "\nFOUND STRING INITIALIZATION\n";
+        switchBoard.initString = true;
+
+    }
+
+    // Loop through input and determine what operator switches need to be set
 
     for(i = 0; i < input.size(); i++){
 
@@ -134,6 +191,26 @@ void setSwitches(string input){
 
     }
 
+    // SET HIGH LEVEL SWITCHES
+
+    if(switchBoard.computation == true && switchBoard.assignment == false){
+
+
+        // Do the raw math problem
+
+        /* EXTRA LOGIC GOES HERE TO REPLACE VARIABLES*/
+
+        cout << "\n" << parser.eval(input) << "\n";
+
+    }
+
+
+
+}
+
+void courseOfAction(string input){
+
+    // Check the switchboard
 
 
 }
