@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <vector>
+#include "ExpressionParser.h"
 
 using namespace std;
 
@@ -104,8 +105,10 @@ void engine(string input){
 
     setSwitches(input);
 
+    ExpressionParser<int> parser;
 
 
+    cout << "\n" << parser.eval(input) << "\n";
 
     // Clear switches
 
