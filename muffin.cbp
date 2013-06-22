@@ -30,10 +30,10 @@
 		</Build>
 		<Compiler>
 			<Add option="-Wall" />
-			<Add option="-fexceptions" />
 		</Compiler>
-		<Unit filename="ExpressionParser.h" />
-		<Unit filename="main.cpp" />
+		<Unit filename="main.c">
+			<Option compilerVar="CC" />
+		</Unit>
 		<Extensions>
 			<code_completion />
 			<envvars />

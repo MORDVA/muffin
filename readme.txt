@@ -1,7 +1,7 @@
 muffin
 =====
 
-An interpretter for MuffinScript. Written entirely in C and C++
+A thingy.
 
 How to Build
 ==========
