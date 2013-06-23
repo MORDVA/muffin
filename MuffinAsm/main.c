@@ -70,7 +70,33 @@ int main ( int argc, char *argv[] )
 
 void assemble(char* pathOfFile){
 
+    /* The contents of the file */
+    char * buffer = 0;
 
+    /* The length of the file */
+    long length;
+
+    /* The file pointer */
+    FILE * f = fopen (pathOfFile, "rb");
+
+    if (f)
+    {
+      fseek (f, 0, SEEK_END);
+      length = ftell (f);
+      fseek (f, 0, SEEK_SET);
+      buffer = malloc (length);
+      if (buffer)
+      {
+        fread (buffer, 1, length, f);
+      }
+      fclose (f);
+    }
+
+    if (buffer)
+    {
+        // Data proccessing
+        printf("\n%s\n",buffer);
+    }
 
 
 }
