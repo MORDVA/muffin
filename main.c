@@ -1,25 +1,12 @@
 #include <stdio.h>
+#include "globals.h"
 
-#define NUM_REGS 4
-unsigned regs[ NUM_REGS ];
-
-unsigned program[] = { 0x1064, 0x11C8, 0x2201, 0x0000 };
-
-/* program counter */
-int pc = 0;
 
 /* fetch the next word from the program */
 int fetch()
 {
   return program[ pc++ ];
 }
-
-/* instruction fields */
-int instrNum = 0;
-int reg1     = 0;
-int reg2     = 0;
-int reg3     = 0;
-int imm      = 0;
 
 /* decode a word */
 void decode( int instr )
