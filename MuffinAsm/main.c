@@ -1,16 +1,16 @@
-/* Muffin Assembler
+/*  Muffin Assembler
 //
 //  This is the source code for the muffin assember.
 //  These are some basic regulations:
 
     Commands       |       Code         |       Token Amount
     ---------------------------------------------------------
-    load                    1                   2
-    halt                    0                   0
-    mov                     2                   2
-    add                     3                   3
-    jmp                     4                   1
-    lbl                     5                   1
+    load                    1                        2
+    halt                    0                        0
+    mov                     2                        2
+    add                     3                        3
+    jmp                     4                        1
+    lbl                     5                        1
 
 
     => Scalar values begin with #
@@ -42,17 +42,19 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 // FUNCTION PROTOTYPES
 
 void assemble(char* pathOfFile);
 void writeOutput();
 
-// The output array. The only global variable
+// Globals
 
-char outputFile[100];
+char * tokenPointer;
 
-char *outputFileString = outputFile;
+/* TODO: Dynamically allocate this array */
+char * eachLine[100];
 
 int main ( int argc, char *argv[] )
 {
@@ -69,6 +71,9 @@ int main ( int argc, char *argv[] )
 }
 
 void assemble(char* pathOfFile){
+
+    /* Loop Counter */
+    int i = 0;
 
     /* The contents of the file */
     char * buffer = 0;
@@ -95,7 +100,21 @@ void assemble(char* pathOfFile){
     if (buffer)
     {
         // Data proccessing
-        printf("\n%s\n",buffer);
+        printf("\nRecieved File:\n%s\n",buffer);
+
+        // Begin the proccess of splitting up all the strings into seperate commands
+
+        tokenPointer = strtok(buffer,"\n");
+
+        while (tokenPointer != NULL)
+        {
+            eachLine[i] = tokenPointer;
+            tokenPointer = strtok (NULL, "\n");
+            i++;
+        }
+
+        printf("\nThis is the second line: %s", eachLine[1]);
+
     }
 
 
