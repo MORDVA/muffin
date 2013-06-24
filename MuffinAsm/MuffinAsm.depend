@@ -1,6 +1,7 @@
 # depslib dependency file v1.0
-1372027357 source:c:\documents and settings\norbert joseph\desktop\muffin\muffinasm\main.c
+1372115146 source:c:\documents and settings\norbert joseph\desktop\muffin\muffinasm\main.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
+	<ctype.h>
 

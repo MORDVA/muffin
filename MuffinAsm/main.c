@@ -24,17 +24,18 @@
         ENCODING OF INSTRUCTIONS
     ===================================
 
-    =>  Instruction encoding is done with 4 numbers
+    =>  Instruction encoding
 
-    =>  The first number is the command code.
+        However, first a binary version of the instruction is created:
 
-    =>  The second number is the the value of the token.
+        EXAMPLE:
 
-        -> This could be the number of the register
-        -> This could be an address
+          0001         0000        0110           0100
 
-    =>  The last two numbers can represent scalar values or two
-        registers that need to be added.
+        command       register    register       register
+          code          code        code           code
+                         or          or             or
+                    label value                   value
 
 //
 */
@@ -43,6 +44,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <ctype.h>
 
 // FUNCTION PROTOTYPES
 
@@ -52,11 +54,12 @@ void translate();
 
 // Globals
 
-/* TODO: Dynamically allocate this array */
+/* TODO: Dynamically allocate this array based on the number of lines in the file */
 
-char* eachLine[100];
+char* eachOutputLine[100]; /* Holds the assembly input code line by line */
+char* eachInputLine[100];  /* Holds the binary output code line by line  */
 
-/* TODO: Dynamically allocate this output code character array */
+/* TODO: Dynamically allocate this output code character array based on 16 * numOfLines */
 
 char outputCode[100];
 
@@ -121,7 +124,7 @@ void assemble(char* pathOfFile){
 
         while (tokenPointer != NULL)
         {
-            eachLine[i] = tokenPointer;
+            eachInputLine[i] = tokenPointer;
             tokenPointer = strtok (NULL, "\n");
             i++;
         }
@@ -135,15 +138,56 @@ void assemble(char* pathOfFile){
 
 void writeOutput(char* destinationPath){
 
-
+    printf("\nThis is the output generated and written: TODO\n");
 
 }
 
 void translate(){
 
     int i;
+    int k;
+
+    char* binaryInstruction[4] = {"0000","0000","0000","0000"};
+
+    char bufferForLine[20];
+    char* lineInBinary = bufferForLine;
+
+    /* Scan through each line of assembly */
+
+    for(i = 0; i < numberOfLines; i++)
+    {
+
+        /* First determine the command and encode it */
+
+            // Scan through each character in the line of assembly
+
+            for(k = 0; k < 10; k++){
+                if((eachInputLine[i][k] == 'm') && (eachInputLine[i][k + 1] == 'o') && (eachInputLine[i][k + 2] == 'v')){
+                    printf("\nMOV command found on line %d\n", i + 1);
+                    break;
+                }
+            }
 
 
+
+        /* Push the binary instruction */
+
+        sprintf(lineInBinary, "%s%s%s%s\n", binaryInstruction[0],binaryInstruction[1],binaryInstruction[2],binaryInstruction[3]);
+
+        printf("\nHere is the binary instruction pushed: %s",lineInBinary);
+
+        // Put into global variable
+
+        eachOutputLine[i] = lineInBinary;
+
+        // Flush the binary instruction
+
+        binaryInstruction[0] = "0000";
+        binaryInstruction[1] = "0000";
+        binaryInstruction[2] = "0000";
+        binaryInstruction[3] = "0000";
+
+    }
 
 
 
