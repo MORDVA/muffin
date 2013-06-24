@@ -5,12 +5,12 @@
 
     Commands       |       Code         |       Token Amount
     ---------------------------------------------------------
-    load                    1                        2
-    halt                    0                        0
-    mov                     2                        2
-    add                     3                        3
-    jmp                     4                        1
-    lbl                     5                        1
+    load                    01                        2
+    halt                    00                        0
+    mov                     02                        2
+    add                     03                        3
+    jmp                     04                        1
+    lbl                     05                        1
 
 
     => Scalar values begin with #
@@ -47,14 +47,22 @@
 // FUNCTION PROTOTYPES
 
 void assemble(char* pathOfFile);
-void writeOutput();
+void writeOutput(char* destinationPath);
+void translate();
 
 // Globals
 
-char * tokenPointer;
-
 /* TODO: Dynamically allocate this array */
-char * eachLine[100];
+
+char* eachLine[100];
+
+/* TODO: Dynamically allocate this output code character array */
+
+char outputCode[100];
+
+char* outputCodeString = outputCode;
+
+int numberOfLines;
 
 int main ( int argc, char *argv[] )
 {
@@ -64,6 +72,8 @@ int main ( int argc, char *argv[] )
 
         printf("\nBegin the assembly of %s", argv[1]);
         assemble(argv[1]);
+        translate();
+        writeOutput(argv[2]);
 
     }
 
@@ -74,6 +84,9 @@ void assemble(char* pathOfFile){
 
     /* Loop Counter */
     int i = 0;
+
+    /* For the string tokenizer function */
+    char * tokenPointer;
 
     /* The contents of the file */
     char * buffer = 0;
@@ -113,14 +126,26 @@ void assemble(char* pathOfFile){
             i++;
         }
 
-        printf("\nThis is the second line: %s", eachLine[1]);
+        numberOfLines = i;
 
     }
 
 
 }
 
-void writeOutput(){
+void writeOutput(char* destinationPath){
+
+
+
+}
+
+void translate(){
+
+    int i;
+
+
+
+
 
 
 
