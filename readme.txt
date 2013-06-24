@@ -1,7 +1,7 @@
 muffin
 =====
 
-A thingy.
+A Virtual Machine.
 
 How to Build
 ==========
