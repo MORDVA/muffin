@@ -144,30 +144,47 @@ void writeOutput(char* destinationPath){
 
 void translate(){
 
-    int i;
-    int k;
+    int i;    /* Loop counting variables */
+    int g;
+    int z;
 
+    /* The binary instruction array */
     char* binaryInstruction[4] = {"0000","0000","0000","0000"};
 
+    /* The converted binary line */
     char bufferForLine[20];
     char* lineInBinary = bufferForLine;
+
+    /* Used for splitting the current assembly line into tokens */
+    char* tokenPointer;
+    char* eachToken[4];
 
     /* Scan through each line of assembly */
 
     for(i = 0; i < numberOfLines; i++)
     {
 
+        g = 0;
+
         /* First determine the command and encode it */
 
-            // Scan through each character in the line of assembly
+            // Begin by splitting the current command into tokens
 
-            for(k = 0; k < 10; k++){
-                if((eachInputLine[i][k] == 'm') && (eachInputLine[i][k + 1] == 'o') && (eachInputLine[i][k + 2] == 'v')){
-                    printf("\nMOV command found on line %d\n", i + 1);
-                    break;
-                }
+            tokenPointer = strtok(eachInputLine[i]," ,");
+
+            while (tokenPointer != NULL)
+            {
+                eachToken[g] = tokenPointer;
+                tokenPointer = strtok (NULL, ", ");
+                g++;
             }
 
+            // print out the tokens
+
+            printf("\nThe tokens for line %d:\n", i + 1);
+            for(z = 0; z < 4; z++){
+                printf("\t%s\n",eachToken[z]);
+            }
 
 
         /* Push the binary instruction */
@@ -186,6 +203,13 @@ void translate(){
         binaryInstruction[1] = "0000";
         binaryInstruction[2] = "0000";
         binaryInstruction[3] = "0000";
+
+        // Flush the tokens for the line
+
+        eachToken[0] = "";
+        eachToken[1] = "";
+        eachToken[2] = "";
+        eachToken[3] = "";
 
     }
 
