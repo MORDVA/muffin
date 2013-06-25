@@ -5,12 +5,12 @@
 
     Commands       |       Code         |       Token Amount
     ---------------------------------------------------------
-    load                    01                        2
-    halt                    00                        0
-    mov                     02                        2
-    add                     03                        3
-    jmp                     04                        1
-    lbl                     05                        1
+    load                    0001                     2
+    halt                    0000                     0
+    mov                     0002                     2
+    add                     0003                     3
+    jmp                     0004                     1
+    lbl                     0005                     1
 
 
     => Scalar values begin with #
@@ -46,13 +46,13 @@
 #include <string.h>
 #include <ctype.h>
 
-// FUNCTION PROTOTYPES
+/* ======= FUNCTION PROTOTYPES ======== */
 
 void assemble(char* pathOfFile);
 void writeOutput(char* destinationPath);
 void translate();
 
-// Globals
+/* ============== GLOBALS ============= */
 
 /* TODO: Dynamically allocate this array based on the number of lines in the file */
 
@@ -71,7 +71,8 @@ int main ( int argc, char *argv[] )
 {
     printf("Muffin Assembler\n");
 
-    if(argc == 2){
+    if(argc == 2)
+    {
 
         printf("\nBegin the assembly of %s", argv[1]);
         assemble(argv[1]);
@@ -83,7 +84,8 @@ int main ( int argc, char *argv[] )
     return 0;
 }
 
-void assemble(char* pathOfFile){
+void assemble(char* pathOfFile)
+{
 
     /* Loop Counter */
     int i = 0;
@@ -102,23 +104,24 @@ void assemble(char* pathOfFile){
 
     if (f)
     {
-      fseek (f, 0, SEEK_END);
-      length = ftell (f);
-      fseek (f, 0, SEEK_SET);
-      buffer = malloc (length);
-      if (buffer)
-      {
-        fread (buffer, 1, length, f);
-      }
-      fclose (f);
+        fseek (f, 0, SEEK_END);
+        length = ftell (f);
+        fseek (f, 0, SEEK_SET);
+        buffer = malloc (length);
+        if (buffer)
+        {
+            fread (buffer, 1, length, f);
+        }
+        fclose (f);
     }
 
     if (buffer)
     {
-        // Data proccessing
+        /* Data proccessing */
+
         printf("\nRecieved File:\n%s\n",buffer);
 
-        // Begin the proccess of splitting up all the strings into seperate commands
+        /* Begin the proccess of splitting up all the strings into seperate commands */
 
         tokenPointer = strtok(buffer,"\n");
 
@@ -136,13 +139,15 @@ void assemble(char* pathOfFile){
 
 }
 
-void writeOutput(char* destinationPath){
+void writeOutput(char* destinationPath)
+{
 
     printf("\nThis is the output generated and written: TODO\n");
 
 }
 
-void translate(){
+void translate()
+{
 
     int i;    /* Loop counting variables */
     int g;
@@ -166,45 +171,63 @@ void translate(){
 
         g = 0;
 
+        /* Begin by splitting the current command into tokens */
+
+        tokenPointer = strtok(eachInputLine[i]," ,");
+
+        while (tokenPointer != NULL)
+        {
+            eachToken[g] = tokenPointer;
+            tokenPointer = strtok (NULL, ", ");
+            g++;
+        }
+
+        /* print out the tokens */
+
+        printf("\nThe tokens for line %d:\n", i + 1);
+        for(z = 0; z < 4; z++)
+        {
+            printf("\t%s\n",eachToken[z]);
+        }
+
         /* First determine the command and encode it */
 
-            // Begin by splitting the current command into tokens
+        if(strstr(eachToken[0],"mov") != NULL)
+        {
+            printf("Found a MOV command.\n");
+            binaryInstruction[0] = "0002";
 
-            tokenPointer = strtok(eachInputLine[i]," ,");
+        }
 
-            while (tokenPointer != NULL)
-            {
-                eachToken[g] = tokenPointer;
-                tokenPointer = strtok (NULL, ", ");
-                g++;
-            }
+        else if(strstr(eachToken[0],"halt") != NULL)
+        {
+            printf("Found a HALT command.\n");
+            binaryInstruction[0] = "0000";
+        }
 
-            // print out the tokens
-
-            printf("\nThe tokens for line %d:\n", i + 1);
-            for(z = 0; z < 4; z++){
-                printf("\t%s\n",eachToken[z]);
-            }
-
-
+        else if(strstr(eachToken[0],"load") != NULL)
+        {
+            printf("Found a LOAD command.\n");
+            binaryInstruction[0] = "0001";
+        }
         /* Push the binary instruction */
 
         sprintf(lineInBinary, "%s%s%s%s\n", binaryInstruction[0],binaryInstruction[1],binaryInstruction[2],binaryInstruction[3]);
 
         printf("\nHere is the binary instruction pushed: %s",lineInBinary);
 
-        // Put into global variable
+        /* Push the line into the output lines array */
 
         eachOutputLine[i] = lineInBinary;
 
-        // Flush the binary instruction
+        /* Flush the binary instruction */
 
         binaryInstruction[0] = "0000";
         binaryInstruction[1] = "0000";
         binaryInstruction[2] = "0000";
         binaryInstruction[3] = "0000";
 
-        // Flush the tokens for the line
+        /* Flush the tokens for the line */
 
         eachToken[0] = "";
         eachToken[1] = "";
