@@ -1,0 +1,3 @@
+mov %epb, 23
+halt
+
