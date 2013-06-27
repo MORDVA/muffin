@@ -15,6 +15,11 @@
 
     => Scalar values begin with #
     => Register values begin with %
+
+        -> Register names are one letter long
+        -> if they are specified in lowercase (%a), they are automatically converted to uppercase (%A)
+        -> the letters are encoded as decimal numbers (65 thru 90)
+
     => Memory addresses begin with @
 
     => mov destination, source
@@ -51,6 +56,8 @@
 void assemble(char* pathOfFile);
 void writeOutput(char* destinationPath);
 void translate();
+
+char* extractScaler(char* token);
 
 /* ============== GLOBALS ============= */
 
@@ -164,6 +171,10 @@ void translate()
     char* tokenPointer;
     char* eachToken[4];
 
+    /* A temporary buffer. Use when nessacary but remember to clear afterwords */
+
+    char tempBuffer[4];
+
     /* Scan through each line of assembly */
 
     for(i = 0; i < numberOfLines; i++)
@@ -171,7 +182,7 @@ void translate()
 
         g = 0;
 
-        /* Begin by splitting the current command into tokens */
+        /** Begin by splitting the current command into tokens */
 
         tokenPointer = strtok(eachInputLine[i]," ,;");
 
@@ -190,12 +201,21 @@ void translate()
             printf("\t%s\n",eachToken[z]);
         }
 
-        /* First determine the command and encode it */
+        /** First determine the command and encode it */
 
         if(strstr(eachToken[0],"mov") != NULL)
         {
             printf("Found a MOV command.\n");
             binaryInstruction[0] = "0002";
+
+            /* Determine the register destination to */
+
+            if(strstr(eachToken[1],"%") != NULL){
+
+            }else{
+                fprintf(stderr, "Error on line %d. No register present.", i);
+                exit(0);
+            }
 
         }
 
@@ -209,8 +229,35 @@ void translate()
         {
             printf("Found a LOAD command.\n");
             binaryInstruction[0] = "0001";
+
+            /* Determine the register to load to */
+
+            if(strstr(eachToken[1],"%") != NULL){
+
+                /* Encode the register */
+
+                if(toupper(*(strstr(eachToken[1],"%") + 1)) == 'K'){
+
+                    printf("K register is being loaded\n");
+                    binaryInstruction[1] = "0075";
+
+                    /* Encode the scaler value if present */
+
+                    if(strstr(eachToken[2],"#") != NULL){
+
+                        binaryInstruction[2] = extractScaler(eachToken[2]);
+
+                    }
+
+                }
+
+
+            }else{
+                fprintf(stderr, "Error on line %d. No register present.", i);
+                exit(0);
+            }
         }
-        /* Push the binary instruction */
+        /** Push the binary instruction */
 
         sprintf(lineInBinary, "%s%s%s%s\n", binaryInstruction[0],binaryInstruction[1],binaryInstruction[2],binaryInstruction[3]);
 
@@ -241,3 +288,17 @@ void translate()
 
 
 }
+
+/* TODO: Make this work */
+
+char* extractScaler(char* token){
+
+    char answer[4];
+
+    char* returnThis = answer;
+
+    returnThis = "6969";
+
+    return returnThis;
+}
+
