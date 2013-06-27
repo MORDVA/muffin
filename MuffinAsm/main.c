@@ -11,7 +11,7 @@
     add                     0003                     3
     jmp                     0004                     1
     lbl                     0005                     1
-
+    sub                     0006                     3
 
     => Scalar values begin with #
     => Register values begin with %
@@ -173,12 +173,12 @@ void translate()
 
         /* Begin by splitting the current command into tokens */
 
-        tokenPointer = strtok(eachInputLine[i]," ,");
+        tokenPointer = strtok(eachInputLine[i]," ,;");
 
         while (tokenPointer != NULL)
         {
             eachToken[g] = tokenPointer;
-            tokenPointer = strtok (NULL, ", ");
+            tokenPointer = strtok (NULL, ", ;");
             g++;
         }
 
