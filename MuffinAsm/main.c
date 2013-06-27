@@ -51,6 +51,8 @@
 #include <string.h>
 #include <ctype.h>
 
+#include "usefulstring.h"
+
 /* ======= FUNCTION PROTOTYPES ======== */
 
 void assemble(char* pathOfFile);
@@ -289,11 +291,20 @@ void translate()
 
 }
 
-/* TODO: Make this work */
+/** extractScaler() function
+//      Utilized for building scaler tokens.
+//      Takes care of all sizing issues.
+*/
 
 char* extractScaler(char* token){
 
     char answer[4];
+
+    /* Remove all spaces from the token */
+
+    remchars(token," ");
+
+    printf("This is the token with the spaces removed: %s", token);
 
     char* returnThis = answer;
 

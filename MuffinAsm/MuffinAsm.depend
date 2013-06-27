@@ -13,3 +13,16 @@
 	<string.h>
 	<ctype.h>
 
+1372368893 source:c:\users\neelam\desktop\muffin\muffinasm\usefulstring.c
+
+1372369036 source:c:\users\neelam\desktop\muffin\muffinasm\main.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<ctype.h>
+	"usefulstring.h"
+
+1372368893 c:\users\neelam\desktop\muffin\muffinasm\usefulstring.h
+	<string.h>
+	<stdlib.h>
+
