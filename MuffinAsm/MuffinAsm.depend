@@ -1,9 +1,10 @@
 # depslib dependency file v1.0
-1372355080 source:c:\documents and settings\norbert joseph\desktop\muffin\muffinasm\main.c
+1372447249 source:c:\documents and settings\norbert joseph\desktop\muffin\muffinasm\main.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
 	<ctype.h>
+	"usefulstring.h"
 
 1372115146 
 
@@ -26,5 +27,11 @@
 	<string.h>
 	<stdlib.h>
 
-1372436113 source:c:\documents and settings\norbert joseph\desktop\muffin\muffinasm\usefulstring.c
+1372447121 source:c:\documents and settings\norbert joseph\desktop\muffin\muffinasm\usefulstring.c
+
+1372446263 c:\documents and settings\norbert joseph\desktop\muffin\muffinasm\usefulstring.h
+	<string.h>
+	<stdlib.h>
+	<stdio.h>
+	<assert.h>
 

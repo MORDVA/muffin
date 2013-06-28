@@ -48,3 +48,16 @@ void reverse(char *str)
         str[len - i] = buf;
     }
 }
+
+void prepend(char* s, const char* t)
+{
+    int len = strlen(t);
+    int i;
+
+    memmove(s + len, s, strlen(s));
+
+    for (i = 0; i < len; i++)
+    {
+        s[i] = t[i];
+    }
+}

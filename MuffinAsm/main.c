@@ -299,18 +299,43 @@ void translate()
 void extractScaler(char* token, char* binaryInstructions[])
 {
 
-    char answer[4];
-    int lengthOfString;
+    char padding[10];
+    char* ptrpadding;
+    int i;
 
-    /* Remove all spaces and pounds from the token */
+    token = token + 1;
 
-    remchars(token,' ');
-    remchars(token,'#');
+    /* If the number is 4 or less digits in length */
 
-    printf("This is the token with the everything but the number removed: %s", token);
+    if(strlen(token) < 4){
 
-    printf("\nThis is the legnth of the number %d",strlen(token));
+        /* Add some padding zeroes */
 
+        for(i = 0; i < (4 - strlen(token)); i++){
+
+            padding[i] = '0';
+
+        }
+
+        padding[i] = '\0';
+
+        ptrpadding = padding;
+
+        // printf("Padding generated: %s", ptrpadding);
+
+        prepend(token,ptrpadding);
+
+        binaryInstructions[3] = token;
+
+    }else if(strlen(token) == 4){
+
+        binaryInstructions[3] = token;
+
+    }else{
+
+        /* TODO: ADD ENCODING HANDLING FOR NUMBERS WITH GREATER THAN 4 DIGITS */
+
+    }
 
 
 }
