@@ -59,7 +59,7 @@ void assemble(char* pathOfFile);
 void writeOutput(char* destinationPath);
 void translate();
 
-char* extractScaler(char* token);
+void extractScaler(char* token, char* binaryInstructions[]);
 
 /* ============== GLOBALS ============= */
 
@@ -243,13 +243,13 @@ void translate()
                     printf("K register is being loaded\n");
                     binaryInstruction[1] = "0075";
 
-                    /* Encode the scaler value if present */
+                }/** TODO: ADD MORE REGISTERS*/
 
-                    if(strstr(eachToken[2],"#") != NULL){
+                /* Encode the scaler value if present */
 
-                        binaryInstruction[2] = extractScaler(eachToken[2]);
+                if(strstr(eachToken[2],"#") != NULL){
 
-                    }
+                    extractScaler(eachToken[2],binaryInstruction);
 
                 }
 
@@ -296,20 +296,22 @@ void translate()
 //      Takes care of all sizing issues.
 */
 
-char* extractScaler(char* token){
+void extractScaler(char* token, char* binaryInstructions[])
+{
 
     char answer[4];
+    int lengthOfString;
 
-    /* Remove all spaces from the token */
+    /* Remove all spaces and pounds from the token */
 
-    remchars(token," ");
+    remchars(token,' ');
+    remchars(token,'#');
 
-    printf("This is the token with the spaces removed: %s", token);
+    printf("This is the token with the everything but the number removed: %s", token);
 
-    char* returnThis = answer;
+    printf("\nThis is the legnth of the number %d",strlen(token));
 
-    returnThis = "6969";
 
-    return returnThis;
+
 }
 
