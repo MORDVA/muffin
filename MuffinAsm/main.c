@@ -210,9 +210,23 @@ void translate()
             printf("Found a MOV command.\n");
             binaryInstruction[0] = "0002";
 
-            /* Determine the register destination to */
+            /* Determine the register destination to encode*/
 
             if(strstr(eachToken[1],"%") != NULL){
+
+                char stuff[20] = "0000";
+                char* ptrstuff = stuff;
+
+                sprintf(ptrstuff, "00%d",(int)toupper(*(strstr(eachToken[1],"%") + 1)));
+                binaryInstruction[1] = ptrstuff;
+
+                /* Determine the register source */
+
+                char stuff2[20] = "0000";
+                char* ptrstuff2 = stuff2;
+
+                sprintf(ptrstuff2, "00%d",(int)toupper(*(strstr(eachToken[2],"%") + 1)));
+                binaryInstruction[2] = ptrstuff2;
 
             }else{
                 fprintf(stderr, "Error on line %d. No register present.", i);
