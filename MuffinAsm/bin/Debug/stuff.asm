@@ -1,3 +1,3 @@
-load %k, #6986       	; load stuff
-mov %k, %j
+load %a, #69       	; load stuff
+mov %b, %a
 halt 		; halt the system

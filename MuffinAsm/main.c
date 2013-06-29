@@ -80,13 +80,17 @@ int main ( int argc, char *argv[] )
 {
     printf("Muffin Assembler\n");
 
-    if(argc == 2)
+    if(argc == 3)
     {
 
-        printf("\nBegin the assembly of %s", argv[1]);
+        printf("\nAssembling %s", argv[1]);
         assemble(argv[1]);
         translate();
         writeOutput(argv[2]);
+
+    }else{
+
+        printf("\nError: Not enough arguments.\n");
 
     }
 
@@ -151,7 +155,7 @@ void assemble(char* pathOfFile)
 void writeOutput(char* destinationPath)
 {
 
-    printf("\nThis is the output generated and written: TODO\n");
+    printf("\nWriting to %s\n",destinationPath);
 
 }
 
@@ -212,23 +216,26 @@ void translate()
 
             /* Determine the register destination to encode*/
 
-            if(strstr(eachToken[1],"%") != NULL){
+            if(strstr(eachToken[1],"%") != NULL)
+            {
 
-                char stuff[20] = "0000";
-                char* ptrstuff = stuff;
+                char tempEncoding[20] = "0000";
+                char* ptrtempEncoding = tempEncoding;
 
-                sprintf(ptrstuff, "00%d",(int)toupper(*(strstr(eachToken[1],"%") + 1)));
-                binaryInstruction[1] = ptrstuff;
+                sprintf(ptrtempEncoding, "00%d",(int)toupper(*(strstr(eachToken[1],"%") + 1)));
+                binaryInstruction[1] = ptrtempEncoding;
 
                 /* Determine the register source */
 
-                char stuff2[20] = "0000";
-                char* ptrstuff2 = stuff2;
+                char tempEncoding2[20] = "0000";
+                char* ptrtempEncoding2 = tempEncoding2;
 
-                sprintf(ptrstuff2, "00%d",(int)toupper(*(strstr(eachToken[2],"%") + 1)));
-                binaryInstruction[2] = ptrstuff2;
+                sprintf(ptrtempEncoding2, "00%d",(int)toupper(*(strstr(eachToken[2],"%") + 1)));
+                binaryInstruction[2] = ptrtempEncoding2;
 
-            }else{
+            }
+            else
+            {
                 fprintf(stderr, "Error on line %d. No register present.", i);
                 exit(0);
             }
@@ -248,27 +255,32 @@ void translate()
 
             /* Determine the register to load to */
 
-            if(strstr(eachToken[1],"%") != NULL){
+            if(strstr(eachToken[1],"%") != NULL)
+            {
 
                 /* Encode the register */
 
-                if(toupper(*(strstr(eachToken[1],"%") + 1)) == 'K'){
+                char tempEncoding3[20] = "0000";
+                char* ptrtempEncoding3 = tempEncoding3;
 
-                    printf("K register is being loaded\n");
-                    binaryInstruction[1] = "0075";
+                sprintf(ptrtempEncoding3, "00%d",(int)toupper(*(strstr(eachToken[1],"%") + 1)));
 
-                }/** TODO: ADD MORE REGISTERS*/
+                printf("%c register is being loaded\n",toupper(*(strstr(eachToken[1],"%") + 1)));
+                binaryInstruction[1] = ptrtempEncoding3;
 
                 /* Encode the scaler value if present */
 
-                if(strstr(eachToken[2],"#") != NULL){
+                if(strstr(eachToken[2],"#") != NULL)
+                {
 
                     extractScaler(eachToken[2],binaryInstruction);
 
                 }
 
 
-            }else{
+            }
+            else
+            {
                 fprintf(stderr, "Error on line %d. No register present.", i);
                 exit(0);
             }
@@ -321,11 +333,13 @@ void extractScaler(char* token, char* binaryInstructions[])
 
     /* If the number is 4 or less digits in length */
 
-    if(strlen(token) < 4){
+    if(strlen(token) < 4)
+    {
 
         /* Add some padding zeroes */
 
-        for(i = 0; i < (4 - strlen(token)); i++){
+        for(i = 0; i < (4 - strlen(token)); i++)
+        {
 
             padding[i] = '0';
 
@@ -341,11 +355,15 @@ void extractScaler(char* token, char* binaryInstructions[])
 
         binaryInstructions[3] = token;
 
-    }else if(strlen(token) == 4){
+    }
+    else if(strlen(token) == 4)
+    {
 
         binaryInstructions[3] = token;
 
-    }else{
+    }
+    else
+    {
 
         /* TODO: ADD ENCODING HANDLING FOR NUMBERS WITH GREATER THAN 4 DIGITS */
 
