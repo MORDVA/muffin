@@ -10,7 +10,9 @@ Create a ```.asm``` file with instructions for the muffin virtual machine.
 Then assemble the file utilizing the Muffin Assembler.
 
 Invoke the following command:
-```MuffinAsm input.asm output.mp```
+```
+MuffinAsm input.asm output.mp
+```
 
 ###How to Build
 
