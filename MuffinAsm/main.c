@@ -57,6 +57,7 @@
 
 void assemble(char* pathOfFile);
 void translate(char* destinationPath);
+int random_number(int min_num, int max_num);
 
 void extractScaler(char* token, char* binaryInstructions[]);
 
@@ -157,12 +158,18 @@ void translate(char* destinationPath)
     char* lineInBinary = bufferForLine;
 
     /* Used for splitting the current assembly line into tokens */
+
     char* tokenPointer;
     char* eachToken[4];
 
     /* A temporary buffer. Use when nessacary but remember to clear afterwords */
 
     char tempBuffer[4];
+
+    /* Two parallel arrays used for setting up labels */
+
+    char* labelNames[9999];
+    int* labelEncodings = (int*) malloc(sizeof(int) * 1);
 
     /* Open and set up the file output will be written to */
 
@@ -195,6 +202,13 @@ void translate(char* destinationPath)
         for(z = 0; z < 4; z++)
         {
             printf("\t%s\n",eachToken[z]);
+        }
+
+        /* If the token is a newline skip it */
+
+        if(strstr(eachToken[0],"\n") != NULL){
+            printf("WORKSY!");
+            continue;
         }
 
         /** First determine the command and encode it */
@@ -241,7 +255,24 @@ void translate(char* destinationPath)
         else if(strstr(eachToken[0],"lbl") != NULL)
         {
             printf("Found a LBL command.\n");
+
+            /* Encode the label */
+            int numberGenerated = random_number(0,9999);
+            *labelEncodings = numberGenerated;
+
+            /* Record the label name */
+            labelNames[i] = eachToken[1];
+
+            printf("Just found label: %s",labelNames[i]);
+
+            /* Push the label */
+
+            char strToPush[20] = "0000";
+            sprintf(strToPush,"%d",*labelEncodings);
+
             binaryInstruction[0] = "0005";
+            binaryInstruction[1] = strToPush;
+
         }
 
         else if(strstr(eachToken[0],"jmp") != NULL)
@@ -414,5 +445,23 @@ void extractScaler(char* token, char* binaryInstructions[])
     }
 
 
+}
+
+/** Random number generation function*/
+
+int random_number(int min_num, int max_num)
+{
+    int result=0,low_num=0,hi_num=0;
+    if(min_num<max_num)
+    {
+        low_num=min_num;
+        hi_num=max_num+1; // this is done to include max_num in output.
+    }else{
+        low_num=max_num+1;// this is done to include max_num in output.
+        hi_num=min_num;
+    }
+    srand(time(NULL));
+    result = (rand()%(hi_num-low_num))+low_num;
+    return result;
 }
 
