@@ -56,25 +56,14 @@
 /* ======= FUNCTION PROTOTYPES ======== */
 
 void assemble(char* pathOfFile);
-void writeOutput(char* destinationPath);
-void translate();
+void translate(char* destinationPath);
 
 void extractScaler(char* token, char* binaryInstructions[]);
 
 /* ============== GLOBALS ============= */
 
-/* TODO: Dynamically allocate this array based on the number of lines in the file */
-
-char* eachOutputLine[100]; /* Holds the assembly input code line by line */
-char* eachInputLine[100];  /* Holds the binary output code line by line  */
-
-/* TODO: Dynamically allocate this output code character array based on 16 * numOfLines */
-
-char outputCode[100];
-
-char* outputCodeString = outputCode;
-
-int numberOfLines;
+char* eachInputLine[99999999];  /* Holds the assembly input code line by line  */
+int numberOfLines;              /* Holds the number of lines of assembly input code */
 
 int main ( int argc, char *argv[] )
 {
@@ -85,8 +74,7 @@ int main ( int argc, char *argv[] )
 
         printf("\nAssembling %s", argv[1]);
         assemble(argv[1]);
-        translate();
-        writeOutput(argv[2]);
+        translate(argv[2]);
 
     }else{
 
@@ -152,14 +140,7 @@ void assemble(char* pathOfFile)
 
 }
 
-void writeOutput(char* destinationPath)
-{
-
-    printf("\nWriting to %s\n",destinationPath);
-
-}
-
-void translate()
+void translate(char* destinationPath)
 {
 
     int i;    /* Loop counting variables */
@@ -180,6 +161,13 @@ void translate()
     /* A temporary buffer. Use when nessacary but remember to clear afterwords */
 
     char tempBuffer[4];
+
+    /* Open and set up the file output will be written to */
+
+    FILE *dest;
+    dest = fopen(destinationPath, "w");
+
+    printf("\nWriting to %s\n",destinationPath);
 
     /* Scan through each line of assembly */
 
@@ -291,9 +279,9 @@ void translate()
 
         printf("\nHere is the binary instruction pushed: %s",lineInBinary);
 
-        /* Push the line into the output lines array */
+        /* Write the line */
 
-        eachOutputLine[i] = lineInBinary;
+        fprintf(dest,"%s",lineInBinary);
 
         /* Flush the binary instruction */
 
@@ -311,9 +299,8 @@ void translate()
 
     }
 
-
-
-
+    /* Close the output file */
+    fclose(dest);
 
 }
 
