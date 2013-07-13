@@ -204,12 +204,12 @@ void translate(char* destinationPath)
             printf("\t%s\n",eachToken[z]);
         }
 
-        /* If the token is a newline skip it */
+        /* If the token is a newline skip it
 
-        if(strstr(eachToken[0],"\n") != NULL){
+        if(strstr(eachInputLine[i],"\n") != NULL){
             printf("WORKSY!");
             continue;
-        }
+        } */
 
         /** First determine the command and encode it */
 
