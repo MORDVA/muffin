@@ -76,7 +76,9 @@ int main ( int argc, char *argv[] )
         assemble(argv[1]);
         translate(argv[2]);
 
-    }else{
+    }
+    else
+    {
 
         printf("\nError: Not enough arguments.\n");
 
@@ -236,6 +238,18 @@ void translate(char* destinationPath)
             binaryInstruction[0] = "0000";
         }
 
+        else if(strstr(eachToken[0],"lbl") != NULL)
+        {
+            printf("Found a LBL command.\n");
+            binaryInstruction[0] = "0005";
+        }
+
+        else if(strstr(eachToken[0],"jmp") != NULL)
+        {
+            printf("Found a JMP command.\n");
+            binaryInstruction[0] = "0004";
+        }
+
         else if(strstr(eachToken[0],"load") != NULL)
         {
             printf("Found a LOAD command.\n");
@@ -336,7 +350,7 @@ void extractScaler(char* token, char* binaryInstructions[])
 
         ptrpadding = padding;
 
-        // printf("Padding generated: %s", ptrpadding);
+        printf("Padding generated: %s", ptrpadding);
 
         prepend(token,ptrpadding);
 
@@ -351,9 +365,52 @@ void extractScaler(char* token, char* binaryInstructions[])
     }
     else
     {
+        /* Add some padding zeroes */
 
-        /* TODO: ADD ENCODING HANDLING FOR NUMBERS WITH GREATER THAN 4 DIGITS */
+        for(i = 0; i < (8 - strlen(token)); i++)
+        {
 
+            padding[i] = '0';
+
+        }
+
+        padding[i] = '\0';
+
+        ptrpadding = padding;
+
+        printf("Padding generated: %s", ptrpadding);
+
+        prepend(token,ptrpadding);
+
+        printf("Here is the greater than 4 digit string: %s", token);
+
+        char firstHalf[40] = "0000";
+        char secondHalf[40] = "0000";
+        char* firstHalfPtr = firstHalf;
+        char* secondHalfPtr = secondHalf;
+        int y;
+
+        for(y = 0; y < 4; y++)
+        {
+            firstHalf[y] = *token;
+            token++;
+        }
+
+        firstHalf[y] = '\0';
+
+        for(y = 0; y < 4; y++)
+        {
+            secondHalf[y] = *token;
+            token++;
+        }
+
+        secondHalf[y] = '\0';
+
+        printf("\nHere is the first half: %s",firstHalfPtr);
+        printf("\nHere is the first half: %s",secondHalfPtr);
+
+        binaryInstructions[2] = firstHalfPtr;
+        binaryInstructions[3] = secondHalfPtr;
     }
 
 
