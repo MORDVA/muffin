@@ -57,7 +57,7 @@
 
 void assemble(char* pathOfFile);
 void translate(char* destinationPath);
-int random_number(int min_num, int max_num);
+int gen_rand(void);
 
 void extractScaler(char* token, char* binaryInstructions[]);
 
@@ -123,7 +123,7 @@ void assemble(char* pathOfFile)
     {
         /* Data proccessing */
 
-        printf("\nRecieved File:\n%s\n",buffer);
+        printf("\nRecieved File:\n====================================\n%s\n",buffer);
 
         /* Begin the proccess of splitting up all the strings into seperate commands */
 
@@ -140,6 +140,7 @@ void assemble(char* pathOfFile)
 
     }
 
+    printf("\n====================================");
 
 }
 
@@ -149,9 +150,11 @@ void translate(char* destinationPath)
     int i;    /* Loop counting variables */
     int g;
     int z;
+    int j = 0;
+    int u;
 
     /* The binary instruction array */
-    char* binaryInstruction[4] = {"0000","0000","0000","0000"};
+    char* binaryInstruction[4] = {"XXXX","XXXX","XXXX","XXXX"};
 
     /* The converted binary line */
     char bufferForLine[20];
@@ -198,18 +201,11 @@ void translate(char* destinationPath)
 
         /* print out the tokens */
 
-        printf("\nThe tokens for line %d:\n", i + 1);
+        printf("\n==================================\nThe tokens for line %d:\n", i + 1);
         for(z = 0; z < 4; z++)
         {
             printf("\t%s\n",eachToken[z]);
         }
-
-        /* If the token is a newline skip it
-
-        if(strstr(eachInputLine[i],"\n") != NULL){
-            printf("WORKSY!");
-            continue;
-        } */
 
         /** First determine the command and encode it */
 
@@ -257,13 +253,14 @@ void translate(char* destinationPath)
             printf("Found a LBL command.\n");
 
             /* Encode the label */
-            int numberGenerated = random_number(0,9999);
+            gen_rand();
+            int numberGenerated = gen_rand();
             *labelEncodings = numberGenerated;
 
             /* Record the label name */
-            labelNames[i] = eachToken[1];
+            labelNames[j] = eachToken[1];
 
-            printf("Just found label: %s",labelNames[i]);
+            printf("Just found label: %s",labelNames[j]);
 
             /* Push the label */
 
@@ -273,11 +270,29 @@ void translate(char* destinationPath)
             binaryInstruction[0] = "0005";
             binaryInstruction[1] = strToPush;
 
+            /* Increment and reallocate memory */
+
+            j++;
+            labelEncodings = (int*) realloc (labelEncodings, sizeof(int) * (j + 1));
+            labelEncodings += j;
+
+
         }
 
         else if(strstr(eachToken[0],"jmp") != NULL)
         {
             printf("Found a JMP command.\n");
+            printf("Just found jump point: %s", eachToken[1]);
+
+            /* Find the jump name */
+            /*for(u = 0; u < j; u++)
+            {
+                if(eachToken[1]){
+                    printf("\nLegal Jump\n");
+                    break;
+                }
+            }*/
+
             binaryInstruction[0] = "0004";
         }
 
@@ -330,10 +345,10 @@ void translate(char* destinationPath)
 
         /* Flush the binary instruction */
 
-        binaryInstruction[0] = "0000";
-        binaryInstruction[1] = "0000";
-        binaryInstruction[2] = "0000";
-        binaryInstruction[3] = "0000";
+        binaryInstruction[0] = "XXXX";
+        binaryInstruction[1] = "XXXX";
+        binaryInstruction[2] = "XXXX";
+        binaryInstruction[3] = "XXXX";
 
         /* Flush the tokens for the line */
 
@@ -381,7 +396,7 @@ void extractScaler(char* token, char* binaryInstructions[])
 
         ptrpadding = padding;
 
-        printf("Padding generated: %s", ptrpadding);
+        printf("\nPadding generated: %s", ptrpadding);
 
         prepend(token,ptrpadding);
 
@@ -447,21 +462,15 @@ void extractScaler(char* token, char* binaryInstructions[])
 
 }
 
-/** Random number generation function*/
+/** Random number generation function
+*   returns random number in range of 0 to 9999
+*/
 
-int random_number(int min_num, int max_num)
+int gen_rand(void)
 {
-    int result=0,low_num=0,hi_num=0;
-    if(min_num<max_num)
-    {
-        low_num=min_num;
-        hi_num=max_num+1; // this is done to include max_num in output.
-    }else{
-        low_num=max_num+1;// this is done to include max_num in output.
-        hi_num=min_num;
-    }
-    srand(time(NULL));
-    result = (rand()%(hi_num-low_num))+low_num;
-    return result;
+   int n;
+   n= rand() % 10000;  /* n is random number in range of 0 - 99 */
+   return n;
 }
+
 

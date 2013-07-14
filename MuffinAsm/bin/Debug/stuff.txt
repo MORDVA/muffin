@@ -1,0 +1,10 @@
+lbl main
+	load %a, #61      	; load stuff
+	load %d, #64
+	mov %b, %a
+	halt 		; halt the system
+  
+lbl kinch
+	load %d, #98
+
+	jmp kinch

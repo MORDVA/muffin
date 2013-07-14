@@ -14,7 +14,8 @@ int numberOfLines;
 
 /* The registers */
 
-typedef struct registers{
+typedef struct registers
+{
 
 } registerBank;
 
@@ -22,11 +23,12 @@ registerBank REGISTERS;
 
 int main( int argc, char * argv[] )
 {
-  loadProg(argv[1]);
-  return 0;
+    loadProg(argv[1]);
+    return 0;
 }
 
-void loadProg(char* srcFilePath){
+void loadProg(char* srcFilePath)
+{
 
     printf("Executing %s\n", srcFilePath);
 
@@ -86,7 +88,8 @@ void loadProg(char* srcFilePath){
 *   Also sets instruction pointer to the start point
 */
 
-void setPoints(){
+void setPoints()
+{
 
 
 }
@@ -95,7 +98,8 @@ void setPoints(){
 *   Then returns the parallel jumpPoints[] integer
 */
 
-int getNewInstructionPointer(char* jumpName){
+int getNewInstructionPointer(char* jumpName)
+{
 
 }
 
